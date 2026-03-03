@@ -29,12 +29,15 @@ db_config = {
 def get_db_connection():
     """Establish a connection to the MySQL database, with SQLite fallback"""
     try:
-        # Extract config values individually to debug
+        # Extract config values individually with robust defaults
         host = os.getenv('DB_HOST', 'localhost')
         user = os.getenv('DB_USER', 'root')
         password = os.getenv('DB_PASSWORD', '')
         database = os.getenv('DB_NAME', 'userdb')
-        port = int(os.getenv('DB_PORT', 3306))
+        
+        # Robust port parsing
+        port_str = os.getenv('DB_PORT')
+        port = int(port_str) if port_str and port_str.strip() else 3306
         
         print(f"Attempting MySQL connection to: {host}:{port}, user: {user}, db: {database}")
         
@@ -44,20 +47,25 @@ def get_db_connection():
             password=password,
             database=database,
             port=port,
-            ssl_disabled=True
+            ssl_disabled=True,
+            connect_timeout=5 # Add timeout for MySQL
         )
         print("MySQL connection successful!")
         return connection
-    except mysql.connector.Error as err:
+    except Exception as err:
         print(f"MySQL connection failed: {err}")
         print("Falling back to SQLite...")
         # Fallback to SQLite
         try:
-            conn = sqlite3.connect('users_local.db', timeout=20.0)  # Add timeout
-            conn.row_factory = sqlite3.Row  # This enables column access by name
+            # Use an absolute path for the SQLite database to ensure it's found
+            db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'users_local.db')
+            print(f"Connecting to SQLite at: {db_path}")
+            
+            conn = sqlite3.connect(db_path, timeout=20.0)
+            conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             
-            # Create users table if it doesn't exist in SQLite
+            # Create users table if it doesn't exist
             create_table_query = """
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,20 +86,29 @@ def get_db_connection():
 
 def initialize_database():
     """Initialize the database and create users table if it doesn't exist"""
-    # Try MySQL first
-    temp_config = db_config.copy()
-    temp_config.pop('database', None)  # Remove database name temporarily
+    # Robust port parsing
+    port_str = os.getenv('DB_PORT')
+    port = int(port_str) if port_str and port_str.strip() else 3306
     
+    # Try MySQL first
     try:
-        connection = mysql.connector.connect(**temp_config)
+        connection = mysql.connector.connect(
+            host=os.getenv('DB_HOST', 'localhost'),
+            user=os.getenv('DB_USER', 'root'),
+            password=os.getenv('DB_PASSWORD', ''),
+            port=port,
+            ssl_disabled=True,
+            connect_timeout=5
+        )
         cursor = connection.cursor()
         
         # Create database if it doesn't exist
-        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_config['database']}")
+        db_name = os.getenv('DB_NAME', 'userdb')
+        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
         connection.commit()
         
         # Now connect to the specific database
-        connection.database = db_config['database']
+        connection.database = db_name
         
         # Check if phone column exists, if not, add it
         check_column_query = """
@@ -99,7 +116,7 @@ def initialize_database():
         FROM INFORMATION_SCHEMA.COLUMNS 
         WHERE TABLE_SCHEMA = %s AND TABLE_NAME = 'users' AND COLUMN_NAME = 'phone'
         """
-        cursor.execute(check_column_query, (db_config['database'],))
+        cursor.execute(check_column_query, (db_name,))
         column_exists = cursor.fetchone()
         
         # Create users table if it doesn't exist
@@ -127,10 +144,14 @@ def initialize_database():
         cursor.close()
         connection.close()
         
-    except mysql.connector.Error:
+    except Exception as err:
+        print(f"MySQL initialization failed: {err}")
         # MySQL failed, try SQLite
         try:
-            conn = sqlite3.connect('users_local.db')
+            db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'users_local.db')
+            print(f"Initializing SQLite at: {db_path}")
+            
+            conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
             
             # Create users table if it doesn't exist in SQLite
