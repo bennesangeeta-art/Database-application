@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+backend/.env
+
+# Databases
+backend/users_local.db
+*.db
+
+# Environment
+.venv/
+venv/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+
+# System
+.qoder/
+.DS_Store
