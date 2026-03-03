@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__, static_folder='../frontend')
+app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), '..', 'frontend'))
 CORS(app)  # Enable CORS for all routes
 
 @app.route('/')
