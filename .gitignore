@@ -2,21 +2,57 @@
 __pycache__/
 *.py[cod]
 *$py.class
-backend/.env
-
-# Databases
-backend/users_local.db
-*.db
-
-# Environment
-.venv/
+*.so
+.Python
+env/
 venv/
 ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# IDEs
+# Flask
+instance/
+.webassets-cache
+
+# Environment variables
+.env
+*.env
+!.env.example
+
+# IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
-# System
-.qoder/
+# OS
 .DS_Store
+Thumbs.db
+
+# Database (SQLite)
+*.db
+*.sqlite
+*.sqlite3
+users_local.db
+
+# Logs
+*.log
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/

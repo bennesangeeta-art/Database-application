@@ -1,6 +1,11 @@
 # 🔐 User Authentication & Database Management System
 
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Deployed-success?logo=vercel&logoColor=white)](https://database-application-bennesangeeta-art.vercel.app)
+
 A production-ready Full-Stack User Authentication system featuring a Flask backend, responsive HTML5 frontend, and dual-database support (MySQL with SQLite fallback).
+
+## 🌍 Live Demo
+**Visit the live application here:** [https://database-application-bennesangeeta-art.vercel.app](https://database-application-bennesangeeta-art.vercel.app)
 
 ## 🚀 Live Output
 
