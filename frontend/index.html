@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Authentication System</title>
+    <link rel="stylesheet" href="styles.css?v=2">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -261,6 +262,7 @@
         
         console.log('Environment:', isVercel ? 'Vercel (using /api/ prefix)' : 'Local (no prefix)');
         console.log('API Base URL:', API_BASE_URL);
+        console.log('Full register URL:', `${API_BASE_URL}/register`);
 
         // DOM Elements
         const registrationPage = document.getElementById('registrationPage');
