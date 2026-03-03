@@ -1,46 +1,75 @@
-# User Authentication System
+# 🔐 User Authentication & Database Management System
 
-This application consists of a frontend and backend for user registration and login functionality.
+A production-ready Full-Stack User Authentication system featuring a Flask backend, responsive HTML5 frontend, and dual-database support (MySQL with SQLite fallback).
 
-## Backend (Flask)
+## 🚀 Live Output
 
-The backend is built with Flask and uses SQLite for data storage.
+### 📝 User Registration
+![Registration Page](screenshots/register.png)
 
-### Features
-- User registration with password hashing
-- User login with credential verification
-- RESTful API endpoints
+### 📊 Admin Dashboard
+![Dashboard Page](screenshots/dashboard.png)
 
-### Endpoints
-- `POST /register` - Register a new user
-- `POST /login` - Authenticate user login
+---
 
-### Setup
-1. Navigate to the backend directory: `cd backend`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run the application: `python app.py`
+## ✨ Features
 
-The backend will run on `http://localhost:5000`.
+- **Authentication**: Secure registration and login with `PBKDF2` password hashing.
+- **Dual Database Support**: 
+  - **Cold Storage**: Remote MySQL (Aiven Cloud) integration.
+  - **Local Persistence**: Automatic SQLite fallback if the remote server is unreachable.
+- **Admin Tools**: Secure `/users` endpoint for viewing current registrations.
+- **Password Management**: Integrated "Forgot Password" and reset functionality.
+- **Production Ready**: Served via `Waitress` WSGI for stability and performance.
 
-## Frontend (HTML/CSS/JavaScript)
+---
 
-The frontend provides a complete user interface for registration, login, and dashboard functionality.
+## 🛠️ Technology Stack
 
-### Features
-- Registration page with validation
-- Login page
-- Dashboard showing welcome message
-- Responsive design
+- **Backend**: Python, Flask, Waitress (WSGI).
+- **Frontend**: HTML5, CSS3 (Vanilla), JavaScript (ES6+).
+- **Security**: Werkzeug Security for hashing.
+- **Deployment**: Configured for Vercel & local production serving.
 
-### Setup
-Simply open `frontend/index.html` in a web browser.
+---
 
-### API Connection
-The frontend connects to the backend API at `http://localhost:5000`.
+## 🏗️ Installation & Setup
 
-## How to Use
-1. Start the backend server
-2. Open the frontend in a browser
-3. Register a new account
-4. Log in with your credentials
-5. View the dashboard
+### 1. Requirements
+Ensure you have Python 3.8+ installed.
+
+### 2. Clone and Install
+```bash
+git clone https://github.com/bennesangeeta-art/Database-application.git
+cd Database-application/backend
+pip install -r requirements.txt
+```
+
+### 3. Run Production Server (Windows)
+Simply run the batch file in the root directory:
+```bash
+start_production.bat
+```
+Or manually:
+```bash
+cd backend
+python run_production.py
+```
+
+### 4. Access the App
+Open your browser and navigate to:
+[http://localhost:5000](http://localhost:5000)
+
+---
+
+## 📁 Repository Structure
+
+- `backend/`: Flask application, database logic, and production runners.
+- `frontend/`: Static assets (index.html).
+- `screenshots/`: Visual output of the application.
+- `tests/`: Extensive Python test suite for validation and API checks.
+
+---
+
+## 🛡️ Security Note
+The application uses environment variables for database credentials. Ensure your `.env` file is excluded from version control (already managed via `.gitignore`).
