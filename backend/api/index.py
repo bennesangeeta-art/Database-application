@@ -73,6 +73,7 @@ def get_db_connection():
             print(f"SQLite connection failed: {e}")
             return None
 
+@app.route('/api/register', methods=['POST'])
 @app.route('/register', methods=['POST'])
 def register():
     """Register a new user"""
@@ -122,6 +123,7 @@ def register():
         print(f"Registration error: {str(e)}")
         return jsonify({'error': f'Registration failed: {str(e)}'}), 500
 
+@app.route('/api/login', methods=['POST'])
 @app.route('/login', methods=['POST'])
 def login():
     """Authenticate user login"""
@@ -163,9 +165,10 @@ def login():
         print(f"Login error: {str(e)}")
         return jsonify({'error': f'Login failed: {str(e)}'}), 500
 
+@app.route('/api/users', methods=['POST'])
 @app.route('/users', methods=['POST'])
 def get_users():
-    """Get all registered users"""
+    """Get all users (admin only)"""
     try:
         data = request.get_json() or {}
         admin_password = data.get('adminPassword')
@@ -209,6 +212,7 @@ def get_users():
         print(f"Get users error: {str(e)}")
         return jsonify({'error': f'Failed to fetch users: {str(e)}'}), 500
 
+@app.route('/api/reset_password', methods=['POST'])
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
     """Reset user password"""
