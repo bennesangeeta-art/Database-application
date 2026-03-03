@@ -1,0 +1,39 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "backend/app.py",
+            "use": "@vercel/python"
+        },
+        {
+            "src": "frontend/**",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/register",
+            "dest": "backend/app.py"
+        },
+        {
+            "src": "/login",
+            "dest": "backend/app.py"
+        },
+        {
+            "src": "/users",
+            "dest": "backend/app.py"
+        },
+        {
+            "src": "/reset_password",
+            "dest": "backend/app.py"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "frontend/$1"
+        },
+        {
+            "src": "/",
+            "dest": "frontend/index.html"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "name": "database-application",
+    "version": "1.0.0",
+    "scripts": {
+        "build": "echo 'No build step required for Flask app'",
+        "start": "python backend/app.py"
+    }
+}
