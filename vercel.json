@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
         {
-            "src": "backend/app.py",
+            "src": "backend/api/index.py",
             "use": "@vercel/python"
         },
         {
@@ -12,20 +12,20 @@
     ],
     "routes": [
         {
-            "src": "/register",
-            "dest": "backend/app.py"
+            "src": "/api/register",
+            "dest": "backend/api/index.py"
         },
         {
-            "src": "/login",
-            "dest": "backend/app.py"
+            "src": "/api/login",
+            "dest": "backend/api/index.py"
         },
         {
-            "src": "/users",
-            "dest": "backend/app.py"
+            "src": "/api/users",
+            "dest": "backend/api/index.py"
         },
         {
-            "src": "/reset_password",
-            "dest": "backend/app.py"
+            "src": "/api/reset_password",
+            "dest": "backend/api/index.py"
         },
         {
             "src": "/(.*)",
