@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,8 +9,20 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+# Set up static folder for frontend
+static_folder_path = os.path.join(os.path.dirname(__file__), '..', '..', 'frontend')
+app = Flask(__name__, static_folder=static_folder_path)
 CORS(app)
+
+@app.route('/')
+def serve_index():
+    """Serve the frontend HTML file"""
+    try:
+        return send_from_directory(app.static_folder, 'index.html')
+    except Exception as e:
+        print(f"Error serving index: {e}")
+        print(f"Static folder path: {app.static_folder}")
+        return jsonify({'error': 'Frontend not found'}), 404
 
 # Database configuration
 db_config = {

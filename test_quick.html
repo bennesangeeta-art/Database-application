@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Test</title>
+</head>
+<body>
+    <h1>Testing API Connection</h1>
+    <div id="result"></div>
+    
+    <script>
+        const isVercel = window.location.hostname.includes('vercel.app');
+        const API_BASE_URL = isVercel ? '/api' : '';
+        
+        console.log('Testing with API_BASE_URL:', API_BASE_URL);
+        
+        // Test registration endpoint
+        fetch(`${API_BASE_URL}/register`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                username: 'test',
+                email: 'test@test.com',
+                phone: '123',
+                password: 'test123',
+                confirmPassword: 'test123'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('result').innerHTML = 
+                '<h2>✅ SUCCESS!</h2>' +
+                '<p>API Base URL: ' + API_BASE_URL + '</p>' +
+                '<p>Response: ' + JSON.stringify(data) + '</p>';
+        })
+        .catch(error => {
+            document.getElementById('result').innerHTML = 
+                '<h2>❌ ERROR</h2>' +
+                '<p>API Base URL: ' + API_BASE_URL + '</p>' +
+                '<p>Error: ' + error.message + '</p>' +
+                '<p>Check console (F12) for details</p>';
+            console.error('Test error:', error);
+        });
+    </script>
+</body>
+</html>
