@@ -255,8 +255,12 @@
 
     <script>
         // Base URL for the backend API
-        // Base URL for the backend API - empty string means relative to current host
-        const API_BASE_URL = '';
+        // Auto-detect environment: use /api/ prefix for Vercel, no prefix for local
+        const isVercel = window.location.hostname.includes('vercel.app');
+        const API_BASE_URL = isVercel ? '/api' : '';
+        
+        console.log('Environment:', isVercel ? 'Vercel (using /api/ prefix)' : 'Local (no prefix)');
+        console.log('API Base URL:', API_BASE_URL);
 
         // DOM Elements
         const registrationPage = document.getElementById('registrationPage');
@@ -396,8 +400,12 @@
                     regMessage.innerHTML = `<div class="error-message">${data.error || 'Registration failed'}</div>`;
                 }
             } catch (error) {
-                regMessage.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
                 console.error('Registration error:', error);
+                if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    regMessage.innerHTML = `<div class="error-message">Cannot connect to server. Please check if the backend is running or try again later.</div>`;
+                } else {
+                    regMessage.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
+                }
             }
         });
 
@@ -427,8 +435,12 @@
                     loginMessage.innerHTML = `<div class="error-message">${data.error || 'Login failed'}</div>`;
                 }
             } catch (error) {
-                loginMessage.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
                 console.error('Login error:', error);
+                if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    loginMessage.innerHTML = `<div class="error-message">Cannot connect to server. Please check if the backend is running or try again later.</div>`;
+                } else {
+                    loginMessage.innerHTML = '<div class="error-message">Network error. Please try again.</div>';
+                }
             }
         });
 
